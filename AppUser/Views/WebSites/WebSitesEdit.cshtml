@@ -1,0 +1,66 @@
+﻿@model AppUser.Models.WebSitesModel
+
+@{
+    ViewData["Title"] = "Edit WebSite";
+}
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+
+<div class="row">
+
+    <form asp-action="WebSitesEdit"
+          asp-route-id="@ViewData["ProfileId"]"
+          asp-route-profileId="@ViewData["ProfileId"]"
+          asp-route-webSiteMenuId=@ViewData["WebSiteMenuId"]
+          asp-route-webSiteMenuDescription="@ViewData["WebSiteMenuDescription"]">
+
+        <input type="hidden" asp-for="RowVersion" />
+
+        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+            <h4 style="border:2px solid blue; background-color:lightgray; text-align:center">
+                @ViewData["WebSiteMenuDescription"]
+            </h4>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="WebSitesMenuId" />
+
+            <div class="form-group has-feedback has-clear" style="margin-top:10px">
+                <label asp-for="WebSiteURL" class="control-label"></label>
+                <input asp-for="WebSiteURL" type="text" autofocus
+                       class="form-control input-sm UserInput Url NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control input-sm UserInput"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <hr />
+
+            <div class="form-group RowBottom">
+                <div asp-validation-summary="All" class="text-danger" style="margin-top:10px"></div>
+                <button type="submit" class="btn btn-sm btn-success"
+                        style="border: groove 3px darkgray">
+                    Update&nbsp;<i class="fa fa-save"></i>
+                </button>
+                <a asp-action="WebSitesIndex"
+                   asp-route-profileId="@ViewData["ProfileId"]"
+                   asp-route-webSiteMenuId=@ViewData["WebSiteMenuId"]
+                   asp-route-webSiteMenuDescription="@ViewData["WebSiteMenuDescription"]"
+                   class="btn btn-sm btn-primary pull-right"
+                   style="border: groove 3px darkgray">
+                    Return&nbsp;<i class="fa fa-hand-point-left"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/Url.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

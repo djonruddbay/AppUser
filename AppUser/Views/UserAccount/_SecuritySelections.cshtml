@@ -1,0 +1,92 @@
+﻿
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<style>
+    select {
+        font-family: FontAwesome
+    }
+</style>
+
+@*  This routine is very different than the one in      *@
+@*  WebMaster DO NOT overwrite one with the other!!!!   *@
+
+@{
+    @*TempData["VerifyUser"] is found in the PasswordRecovery routine*@
+    bool VerifyUser = @TempData["VerifyUser"] == null || @TempData["VerifyUser"].ToString() != "Yes" ? false : true;
+}
+
+<div style="border:6px groove lightgray;">
+
+    @if (!VerifyUser)
+    {
+        <h5 class="form-group RowTop" style="text-align:center;">
+            <label style="text-decoration:underline">Security Selections:</label>
+        </h5>
+    }
+    <div>
+        <input id="selectedSecurityColor" value="@TempData["SecurityColorSelection"]" hidden />
+        <input id="selectedSecuritySymbol" value="@TempData["SecuritySymbolSelection"]" hidden />
+    </div>
+
+    <div class="form-group RowTop" style="margin-left:25px">
+        <label>&nbsp;Select Your Color:&nbsp;</label>
+
+        <select style="background-color:lightcyan; margin-right:25px" class="pull-right"
+                id="securityColorAnswer" name="SecurityColorAnswer">
+
+            <option value="" style="font-weight:300; color:darkgray">Please Select One!</option>
+
+            <option value="Black" style="font-weight:600; color:black">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Black</option>
+            <option value="Blue"  style="font-weight:600; color:blue">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Blue</option>
+            <option value="Brown" style="font-weight:600; color:brown">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Brown</option>
+            <option value="Coral" style="font-weight:600; color:coral">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Coral</option>
+            <option value="Cyan" style="font-weight:600; color:Cyan">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Cyan</option>
+            <option value="Gray" style="font-weight:600; color:gray">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Gray </option>
+            <option value="Green" style="font-weight:600; color:green">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Green </option>
+            <option value="Indigo" style="font-weight:600; color:indigo">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Indigo</option>
+            <option value="Magenta" style="font-weight:600; color:magenta">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Magenta</option>
+            <option value="Olive" style="font-weight:600; color:olive">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Olive </option>
+            <option value="Orange" style="font-weight:600; color:orange">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Orange </option>
+            <option value="Orchid" style="font-weight:600; color:orchid">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Orchid </option>
+            <option value="Purple" style="font-weight:600; color:purple">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Purple</option>
+            <option value="Red" style="font-weight:600; color:red">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Red</option>
+            <option value="Salmon" style="font-weight:600; color:salmon">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Salmon</option>
+            <option value="Teal" style="font-weight:600; color:teal">&nbsp;&#xf111;&nbsp;&nbsp;&nbsp;Teal</option>
+        </select>
+    </div>
+
+    <div class="form-group RowTop" style="margin-left:25px">
+        <label>&nbsp;Select Your Symbol:&nbsp;</label>
+
+        <select style="background-color:lightcyan; margin-right:25px" class="pull-right"
+                id="securitySymbolAnswer" name="SecuritySymbolAnswer">
+
+            <option value="" style="font-weight:300; color:darkgray">Please Select One!</option>
+
+            <option value='Anchor' style="font-weight:600; color:black">&nbsp;&#xf13d;&nbsp;&nbsp;Anchor</option>
+            <option value='Bath' style="font-weight:600; color:black">&nbsp;&#xf2cd;&nbsp;&nbsp;Bath</option>
+            <option value='Bell' style="font-weight:600; color:black">&nbsp;&#xf0f3;&nbsp;&nbsp;Bell</option>
+            <option value='Binoculars' style="font-weight:600; color:black">&nbsp;&#xf1e5;&nbsp;&nbsp;Binoculars</option>
+            <option value='Cloud' style="font-weight:600; color:black">&nbsp;&#xf0c2;&nbsp;&nbsp;Cloud</option>
+            <option value='Coffee' style="font-weight:600; color:black">&nbsp;&#xf0f4;&nbsp;&nbsp;Coffee</option>
+            <option value='Cogs' style="font-weight:600; color:black">&nbsp;&#xf085;&nbsp;&nbsp;Cogs</option>
+            <option value='Heart' style="font-weight:600; color:black">&nbsp;&#xf004;&nbsp;&nbsp;Heart</option>
+            <option value='Hourglass' style="font-weight:600; color:black">&nbsp;&#xf254;&nbsp;&nbsp;Hourglass</option>
+            <option value='Key' style="font-weight:600; color:black">&nbsp;&#xf084;&nbsp;&nbsp;Key</option>
+            <option value='Leaf' style="font-weight:600; color:black">&nbsp;&#xf06c;&nbsp;&nbsp;Leaf</option>
+            <option value='Paw' style="font-weight:600; color:black">&nbsp;&#xf1b0;&nbsp;&nbsp;Paw</option>
+            <option value='Snowflake' style="font-weight:600; color:black">&nbsp;&#xf2dc;&nbsp;&nbsp;Snowflake</option>
+            <option value='Trophy' style="font-weight:600; color:black">&nbsp;&#xf091;&nbsp;&nbsp;Trophy</option>
+            <option value='Bath' style="font-weight:600; color:black">&nbsp;&#xf2cd;&nbsp;&nbsp;Tub</option>
+            <option value='Umbrella' style="font-weight:600; color:black">&nbsp;&#xf0e9;&nbsp;&nbsp;Umbrella</option>
+
+        </select>
+    </div>
+
+    @if (!VerifyUser)
+    {
+        <h5 class="form-group RowBottom" style="text-align:center;">
+            <label style="text-decoration:underline">Please Remember Your Selections!</label>
+        </h5>
+    }
+</div>

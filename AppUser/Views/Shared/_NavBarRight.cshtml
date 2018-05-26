@@ -1,0 +1,62 @@
+
+@using AppUser.Data
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+
+@inject ApplicationDbContext _context
+@inject RoleManager<IdentityRole> RoleManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@*this test verifies that the first WebMaster profile has been created*@
+@if (await RoleManager.RoleExistsAsync(UserRoles.WebMastr))
+{
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        var profile = await _context.Profiles
+            .SingleOrDefaultAsync(m => m.UserId == user.Id);
+
+        <ul class="nav navbar-nav navbar-right">
+
+            @if (profile != null)
+            {
+                <li>
+                    <a asp-area=""
+                       asp-controller="WebSitesMenu"
+                       asp-action="WebSitesMenuIndex"
+                       asp-route-profileId="@profile.Id">
+                        WebSites Menu&nbsp;<i class="fas fa-list"></i>
+                    </a>
+                </li>
+            }
+
+            <li>
+                <a asp-controller="Profile" asp-action="ProfileEditView" asp-route-statusMessage="">
+                    My Profile&nbsp;<i class="fa fa-user-secret"></i>
+                </a>
+            </li>
+
+            <li>
+                <a asp-area="" asp-controller="UserAccount" asp-action="SignOut">
+                    Sign-Out&nbsp;<i class="fa fa-sign-out-alt"></i>
+                </a>
+            </li>
+        </ul>
+
+    }
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="" asp-controller="UserAccount" asp-action="Register">
+                    Register&nbsp;<i class="fa fa-user-plus"></i>
+                </a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="UserAccount" asp-action="SignIn">
+                    Sign-In&nbsp;<i class="fa fa-sign-in-alt"></i>
+                </a>
+            </li>
+        </ul>
+    }
+}

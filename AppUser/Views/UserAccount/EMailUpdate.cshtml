@@ -1,0 +1,69 @@
+﻿@using AppUser.Models.UserAccountViewModels
+
+@model EMailUpdateViewModel
+
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Update My E-Mail";
+    var user = await UserManager.GetUserAsync(User);
+    var IsEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
+    var emailGlyphicon = IsEmailConfirmed ? "glyphicon-check" : "glyphicon-warning-sign";
+    var emailGlyphiconColor = IsEmailConfirmed ? "green" : "orange";
+    var emailToolTip = IsEmailConfirmed ? "EMail Verified" : "EMail Unverified";
+    var CurrentEMail = await UserManager.GetEmailAsync(user);
+}
+
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+<div class="row container">
+    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+
+            <div class="form-group has-feedback has-clear RowTop"
+                 data-toggle="tooltip" data-placement="top" Title="@emailToolTip">
+                <label>Current E-Mail Address:</label>
+                <input asp-for="@CurrentEMail" disabled class="form-control input-sm UserInput NoCopy NoPaste" />
+                <i class="glyphicon @emailGlyphicon form-control-feedback" style="color:@emailGlyphiconColor"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label>New E-Mail Address</label>
+                <label id="emStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="Email" type="text" id="UserEmail" autofocus
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label>Confirm New E-Mail</label>
+                <label id="emConfirmStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="ConfirmEmail" type="text" id="ConfirmEmail" disabled
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <hr />
+
+            <div class="form-group RowBottom">
+                <div asp-validation-summary="All" class="text-danger" style="margin-top:10px"></div>
+                <button type="submit" class="btn btn-sm btn-success">
+                    Save Changes&nbsp;<i class="fa fa-save"></i>
+                </button>
+                <a asp-controller="Profile" 
+                   asp-action="ProfileEditView" 
+                   asp-route-statusMessage=""
+                   class="btn btn-sm btn-primary pull-right">
+                    Return <span class="fa fa-hand-point-left"></span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/EMail.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

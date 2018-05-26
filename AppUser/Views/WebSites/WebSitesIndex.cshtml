@@ -1,0 +1,234 @@
+﻿
+@model PaginatedList<AppUser.Models.WebSitesModel>
+@{
+    ViewData["Title"] = "WebSites";
+    var webSitesTotal = Int32.Parse(ViewData["WebSitesTotal"].ToString());
+    var webSitesSearchCount = Int32.Parse(ViewData["WebSitesSearchCount"].ToString());
+    var sortDisabled = (webSitesSearchCount < 3) ? "disabled" : "";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var btnDeleteVerify = "";
+    var btnDeleteCancel = "";
+}
+
+<h2 style="text-decoration:underline">
+    @ViewData["Title"]
+</h2>
+
+<div class="row container" >
+    <form asp-route-profileId="@ViewData["ProfileId"]"
+          asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+          asp-route-webSiteMenuDescription=@ViewData["WebSiteMenuDescription"]>
+
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <h3 style="border:2px solid blue; background-color:lightgray; text-align:center">
+                @ViewData["WebSiteMenuDescription"]
+            </h3>
+            <div class="form-inline">
+                <a asp-area=""
+                   asp-action="WebSitesAddNew"
+                   asp-route-profileId="@ViewData["ProfileId"]"
+                   asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                   asp-route-webSiteMenuDescription="@ViewData["WebSiteMenuDescription"]"
+                   class="btn btn-xs btn-success pull-left DisabledStatus"
+                   style="padding-top:3px; padding-bottom:3px">
+                    Add New&nbsp;<i class="fa fa-plus"></i>
+                </a>
+
+                @if (webSitesTotal > 0)
+                {
+                    <div class="input-group">
+                        <div class="form-group has-feedback has-clear">
+                            <input type="text" class="form-control input-sm DisabledStatus" autofocus 
+                                   placeholder="Enter Search Text!" name="SearchString"
+                                   value="@ViewData["SearchString"]"
+                                   style="background-color: whitesmoke; width:197px; border:1px solid black"
+                                   spellcheck="false" autocomplete="off">
+                            <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                        </div>
+                        <span class="input-group-btn">
+                            <button type="submit" id="btnSearch"
+                                    class="btn btn-xs btn-default pull-right DisabledStatus"
+                                    style="padding: 3px 6px; background-color: mediumpurple; color:white">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                }
+                <a asp-area=""
+                   asp-controller="WebSitesMenu"
+                   asp-action="WebSitesMenuIndex"
+                   asp-route-profileId="@ViewData["ProfileId"]"
+                   class="btn btn-xs btn-primary btn-group pull-right"
+                   style="padding: 3px 5px;">
+                    Return&nbsp;<i class="fa fa-hand-point-left"></i>
+                </a>
+
+                @if (webSitesTotal > 0)
+                {
+                    <a asp-area=""
+                       asp-action="WebSitesIndex"
+                       asp-route-profileId="@ViewData["ProfileId"]"
+                       asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                       asp-route-webSiteMenuDescription=@ViewData["WebSiteMenuDescription"]
+                       asp-route-searchString="@ViewData["SearchString"]"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-page="@(Model.PageIndex + 1)"
+                       class="btn btn-xs btn-warning pull-right @nextDisabled DisabledStatus"
+                       style="padding: 3px 5px;">
+                        Page&nbsp;<i class="fa fa-arrow-down"></i>
+                    </a>
+                    <a asp-area=""
+                       asp-action="WebSitesIndex"
+                       asp-route-profileId="@ViewData["ProfileId"]"
+                       asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                       asp-route-webSiteMenuDescription=@ViewData["WebSiteMenuDescription"]
+                       asp-route-searchString="@ViewData["SearchString"]"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-page="@(Model.PageIndex - 1)"
+                       class="btn btn-xs btn-warning pull-right @prevDisabled DisabledStatus"
+                       style="padding: 3px 5px;">
+                        Page&nbsp;<i class="fa fa-arrow-up"></i>
+                    </a>
+                    <a asp-area=""
+                       asp-action="WebSitesIndex"
+                       asp-route-profileId="@ViewData["ProfileId"]"
+                       asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                       asp-route-webSiteMenuDescription=@ViewData["WebSiteMenuDescription"]
+                       asp-route-searchString="@ViewData["SearchString"]"
+                       asp-route-sortOrder="@ViewData["SortOrder"]"
+                       class="btn btn-xs btn-info pull-right @sortDisabled DisabledStatus"
+                       style="padding: 3px 5px;">
+                        Sort&nbsp;<i class="@ViewData["SortFaArrow"]"></i>
+                    </a>
+
+                    @if (webSitesSearchCount == 0)
+                    {
+                        <div>
+                            <h4 style="border:2px solid blue; background-color:antiquewhite; text-align:center">
+                                No WebSites Found For Search Criteria
+                            </h4>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row container" >
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" >
+        @if (webSitesTotal == 0)
+        {
+            <div>
+                <h4 style="border:2px solid blue; background-color:antiquewhite; text-align:center">
+                    There are no WebSites Assigned to this Menu Item
+                </h4>
+            </div>
+        }
+        else
+        {
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        btnDeleteVerify = "btnDeleteVerify" + item.Id.ToString();
+                        btnDeleteCancel = "btnDeleteCancel" + item.Id.ToString();
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <div style="font-weight:900; width:300px; margin-bottom:2px">
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </div>
+                                    <span class="input-group-btn">
+                                        <a asp-controller="WebSites"
+                                           asp-action="WebSitesDelete"
+                                           asp-route-id="@item.Id"
+                                           asp-route-profileId="@ViewData["ProfileId"]"
+                                           asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                                           asp-route-webSiteMenuDescription="@ViewData["WebSiteMenuDescription"]"
+                                           class="btn btn-xs btn-danger hidden" id="@btnDeleteVerify"
+                                           style="padding-top:0px; padding-bottom:0px; border: groove 2px darkgray;">
+                                            Verify Delete&nbsp;<i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </span>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-xs btn-primary hidden" id="@btnDeleteCancel"
+                                                onclick="ftnCancelDeleteSite(@item.Id)"
+                                                style="padding-top:0px; padding-bottom:0px; border: groove 2px darkgray;">
+                                            Cancel&nbsp;<i class="fas fa-times-circle"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                                <div style="color:black; background-color:lightgray; margin-top:2px">
+                                    @{
+                                        var shortWebSiteURL = item.WebSiteURL;
+                                        if (shortWebSiteURL.Length > 50)
+                                        {
+                                            shortWebSiteURL = shortWebSiteURL.Substring(0, 50) + " ...";
+                                        }
+                                    }
+                                    @shortWebSiteURL
+
+                                    <a href="@item.WebSiteURL" target="_blank"
+                                       type="button" role="button"
+                                       class="btn btn-xs btn-info pull-right DisabledStatus"
+                                       style="padding-top:0px; padding-bottom:0px;
+                                       border: groove 2px darkgray;">
+                                        Launch&nbsp;<i class="fa fa-rocket"></i>
+                                    </a>
+                                </div>
+                            </td>
+
+                            <td style="width:30px">
+                                <div>
+                                    <a asp-area=""
+                                       asp-action="WebSitesEdit"
+                                       asp-route-id="@item.Id"
+                                       asp-route-profileId="@ViewData["ProfileId"]"
+                                       asp-route-webSiteMenuId="@ViewData["WebSiteMenuId"]"
+                                       asp-route-webSiteMenuDescription="@ViewData["WebSiteMenuDescription"]"
+                                       style="border: groove 2px darkgray"
+                                       class="btn btn-primary btn-xs DisabledStatus"
+                                       data-toggle="tooltip" data-placement="left" Title="Edit Site">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a onclick="ftnDeleteSite(@item.Id)"
+                                       style="border: groove 2px darkgray; padding-left:6px; padding-right:6px"
+                                       class="btn btn-danger btn-xs DisabledStatus"
+                                       data-toggle="tooltip" data-placement="left" Title="Delete Site">
+                                        <i class="fa fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+
+    function ftnDeleteSite(ItemId) {
+       document.getElementById("btnDeleteVerify" + ItemId).classList.remove("hidden");
+        document.getElementById("btnDeleteCancel" + ItemId).classList.remove("hidden");
+        $('a.DisabledStatus').attr('disabled', 'disabled');
+        $('input.DisabledStatus').attr('disabled', 'disabled');
+        $('button.DisabledStatus').attr('disabled', 'disabled');
+
+    }
+
+    function ftnCancelDeleteSite(ItemId) {
+        document.getElementById("btnDeleteVerify" + ItemId).classList.add("hidden");
+        document.getElementById("btnDeleteCancel" + ItemId).classList.add("hidden");
+        $('a.DisabledStatus').removeAttr('disabled');
+        $('input.DisabledStatus').aremoveAttr('disabled');
+        $('button.DisabledStatus').removeAttr('disabled');
+    }
+
+</script>

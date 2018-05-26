@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AppUser</title>
+
+    @* include FontAwesome *@
+    <script defer src="~/FontAwesome/fontawesome-all.min.js"></script>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/CHJ_Sample.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/CHJ_Sample.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    Home&nbsp;<i class="fas fa-home"></i>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                @await Html.PartialAsync("_NavBarLeft")
+                @await Html.PartialAsync("_NavBarRight")
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <footer class="navbar-fixed-bottom">
+        <div class="container">
+            &copy;@DateTime.Now.Year  CHJ_Sample.com (AppUser)
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/CHJ_Sample.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/CHJ_Sample.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+@* About  Modal *@
+<nav class="modal fade container" id="About" role="dialog">
+    <form id="About-form" method="post" role="form">
+        <nav class="controls">
+            <nav class="modal-dialog">
+                <nav class="modal-content bsPopUps">
+                    <nav class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                            <i class="fa fa-times-circle"></i>
+                        </button>
+                        <h4 class="modalHeading">About AppUser.sln</h4>
+                    </nav>
+
+                    <nav class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-offset-2  col-xs-2">Description:</div>
+                            <div class="col-xs-7">VS-2017 Asp.Net Core 2.0 C# Project.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">MVC application with Identity/Authentication.</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">Sister solution to WebMaster.sln.</div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-xs-offset-2  col-xs-2">Purpose:</div>
+                            <div class="col-xs-7">Allows users to organize websites for</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">quick and easy access.</div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-xs-offset-2 col-xs-2">Author:</div>
+                            <div class="col-xs-4">Buddy Jordan</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">(850) 712-3978</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">buddyjordan.1958@gmail.com</div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-xs-offset-2  col-xs-2">Add-On's:</div>
+                            <div class="col-xs-7">
+                                Icons by
+                                <span>
+                                    <a href="https://fontawesome.com/" target="_blank">
+                                        Font Awesome
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-4 col-xs-7">
+                                Profile Images From
+                                <span>
+                                    <a href="https://www.bing.com/images/search?q=free+avatars&qpvt=free+avatars+&qpvt=free+avatars+&qpvt=free+avatars+&FORM=IGRE" target="_blank">
+                                        Bing.com
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </nav>
+                    <nav class="modal-footer">
+                        <a href="#" data-toggle="modal" data-target="#theTandC"
+                           class="input-sm pull-left">
+                            <u><i>Terms and Conditions</i></u>
+                        </a>
+                        <button class="btn btn-sm btn-primary" data-dismiss="modal"
+                                style="border: groove 3px darkgray">
+                            Return <i class="fa fa-hand-point-left"></i>
+                        </button>
+                    </nav>
+                </nav>
+            </nav>
+        </nav>
+    </form>
+</nav>
+
+@* Application Notes *@
+<nav class="modal fade container" id="AppNotes" role="dialog">
+    <nav class="controls">
+        <nav class="modal-dialog modal-lg">
+            <nav class="modal-content bsPopUps">
+                <nav class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                    <h4 class="modalHeading">Design/Development Notes:</h4>
+                </nav>
+
+                <nav class="modal-body" style="max-height:550px; overflow-y:auto">
+                    <div class="row">
+                        <div class="col-xs-3">DataBase:</div>
+                        <div class="col-xs-9">An SQL Server local database named CHJ_Sample.</div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">Home Page:</div>
+                        <div class="col-xs-9">Remains the VS-2017 development default.</div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">Programming Standards:</div>
+                        <div class="col-xs-9">
+                            As much as Programming Standards are an important aspect in application development and maintenance;
+                            they are intentionally omitted in these examples to demonstrate knowledge of different programming techniques.
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-3">Concurrecy Conflicts:</div>
+                        <div class="col-xs-9">
+                            “Deletes after Reads” are trapped and gracefully handled in both solutions.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-3 col-xs-9">
+                            An example of Row Level/Store Wins conflict management is found in AppUser/ProfileEditView.cs.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-3 col-xs-9">
+                            Field Level/Store Wins conflict management is demonstrated in the WebMaster/ProfileEdit class.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-offset-3 col-xs-9">
+                            All remaining conflicts use the default “Client or Last In Wins” scenario.
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">E-Mail:</div>
+                        <div class="col-xs-9">
+                            Currently not available; however, a “workaround” is available for registering users,
+                            as explained in the “Installation/Training” document.
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">UserAccounts Folder:</div>
+                        <div class="col-xs-9">
+                            Present in both solutions. Used to replace the Account/Manage folders as the solutions mature.
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">WebMaster/ProfileCreate:</div>
+                        <div class="col-xs-9">
+                            Not present because the two solutions do not access the same
+                            Root folder and therefore do not share the AppUserData folder.
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-xs-3">BootStrap Grid System:</div>
+                        <div class="col-xs-9">
+                            Needs revisiting.
+                        </div>
+                    </div>
+
+                </nav>
+                <nav class="modal-footer">
+                    <a href="#" data-toggle="modal" data-target="#theTandC"
+                       class="input-sm pull-left">
+                        <u><i>Terms and Conditions</i></u>
+                    </a>
+                    <button class="btn btn-sm btn-primary" data-dismiss="modal"
+                            style="border: groove 3px darkgray">
+                        Return <i class="fa fa-hand-point-left"></i>
+                    </button>
+                </nav>
+            </nav>
+        </nav>
+    </nav>
+</nav>
+
+@* Terms and Conditions *@
+<nav class="modal fade container" id="theTandC" role="dialog">
+    <nav class="controls">
+        <nav class="modal-dialog modal-sm">
+            <nav class="modal-content bsPopUps">
+                <nav class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                    <br />
+                    <h4 class="modalHeading">Terms and Conditions</h4>
+                </nav>
+
+                <nav class="modal-body" style="max-height:500px; overflow-y:auto">
+                    <p>
+                        Website usage Terms-and-Conditions, when finalized, will be found on this popup..
+                    </p>
+                </nav>
+                <nav class="modal-footer">
+                    <button class="btn btn-sm btn-primary" data-dismiss="modal"
+                            style="border: groove 3px darkgray">
+                        Return <i class="fa fa-hand-point-left"></i>
+                    </button>
+                </nav>
+            </nav>
+        </nav>
+    </nav>
+</nav>

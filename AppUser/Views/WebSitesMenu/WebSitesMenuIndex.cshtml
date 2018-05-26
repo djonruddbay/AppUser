@@ -1,0 +1,154 @@
+﻿@model IEnumerable<AppUser.Models.WebSitesMenuModel>
+@using AppUser.Data
+@inject ApplicationDbContext _context
+
+@{
+    ViewData["Title"] = "WebSites Menu";
+    var cntMenuItems = Model.Count();
+    var itemCounter = 0;
+    var skipMoveUp = "";
+    var skipMoveDn = "";
+    var btnDescriptionId = "";
+    var menuItemDisabled = "";
+    var webSitesDisabled = "";
+}
+
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+<div class="row col-xs-3">
+    @if (cntMenuItems > 0)
+    {
+        <div style="margin-top:15px;">
+            <label style="margin-bottom:0px">
+                <span style="background-color:darkgray; color:yellow; border:1px solid black">
+                    &nbsp;Click Item For Web-Sites&nbsp;
+                </span>
+            </label>
+        </div>
+    }
+    <div class="row col-xs-11">
+        <div style="border:solid 2px aqua">
+            @if (cntMenuItems == 0)
+            {
+                <div>
+                    <a href="#" onclick="fctAddFirst('AddFirst')"
+                       class="btn btn-sm btn-block btn-primary">
+                        Add First Menu Item&nbsp;<i class="fa fa-plus"></i>
+                    </a>
+                    @await Html.PartialAsync("_AddMenuItem", "AddFirst:0:AddFirst")
+                </div>
+            }
+            else
+            {
+
+                @foreach (var item in Model)
+                {
+                    var webSites = _context.WebSites
+                        .FirstOrDefault(w => w.WebSitesMenuId == item.Id);
+                    itemCounter += 1;
+                    skipMoveUp = itemCounter == 1 ? "true" : "false";
+                    skipMoveDn = itemCounter == cntMenuItems ? "true" : "false";
+                    webSitesDisabled = webSites != null ? "disabled" : "";
+                    btnDescriptionId = "btnDescriptionId" + item.Id.ToString();
+
+                    <div>
+                        @await Html.PartialAsync("_AddMenuItem", "AddAbove" + @item.Id + ":" + item.Id + ":" + "Above")
+                    </div>
+
+                    <div class="btn-group btn-block" style="width:100%">
+                        <a asp-area=""
+                           asp-controller="WebSites"
+                           asp-action="WebSitesIndex"
+                           asp-route-profileId="@item.ProfileId"
+                           asp-route-webSiteMenuId="@item.Id"
+                           asp-route-webSiteMenuDescription="@item.Description "
+                           class="btn btn-sm btn-primary isDisabled @menuItemDisabled BtnWebSitesUpdate"
+                           style="width:85%; font-weight:900; text-align:left; border: groove 3px darkgray">
+                            @item.Description
+                        </a>
+                        <div class="btn-group" style="width:15%;">
+                            <button class="pull-right btnItemOptions btn btn-sm btn-primary dropdown-toggle isDisabled @menuItemDisabled"
+                                    data-toggle="dropdown" type="button"
+                                    style="padding-left:6px; padding-right:5px">
+                                <i class="glyphicon glyphicon-chevron-right" id="itemChevron"></i>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+
+                            @await Html.PartialAsync("_MenuItemOptions", @item.Id + ":" + skipMoveUp + ":" + skipMoveDn + ":" + webSitesDisabled)
+                        </div>
+                    </div>
+                    <div>
+                        @await Html.PartialAsync("_AddMenuItem", "AddBelow" + @item.Id + ":" + item.Id + ":" + "Below")
+                    </div>
+                    <div>
+                        @await Html.PartialAsync("_EditMenuItem", "EditItem" + @item.Id + ":" + item.Id + ":" + item.Description)
+                    </div>
+                    <div>
+                        @await Html.PartialAsync("_VerifyDeleteItem", "DeleteItem" + @item.Id + ":" + item.Id + ":" + btnDescriptionId)
+                    </div>          
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function fctAddFirst(itemId) {
+        var inputId = itemId + "Input";
+        var currBtn = document.getElementById(itemId);
+        $(currBtn).slideDown();
+        $('button.isDisabled').attr('disabled', 'disabled');
+        $('a.isDisabled').attr('disabled', 'disabled');
+        document.getElementById(inputId).focus();
+    }
+    function fctAddBelow(itemId) {
+        var inputId = itemId + "Input";
+        var currBtn = document.getElementById(itemId);
+        $(currBtn).slideDown();
+        $('button.isDisabled').attr('disabled', 'disabled');
+        $('a.isDisabled').attr('disabled', 'disabled');
+        document.getElementById(inputId).focus();
+    }
+
+    function fctAddAbove(itemId) {
+        var inputId = itemId + "Input";
+        var currBtn = document.getElementById(itemId);
+        $(currBtn).slideDown();
+        $('button.isDisabled').attr('disabled', 'disabled');
+        $('a.isDisabled').attr('disabled', 'disabled');
+        document.getElementById(inputId).focus();
+    }
+
+    function fctCancelBelow(itemId, btnDescriptionId) {
+        var currBtn = document.getElementById(itemId);
+        $(currBtn).slideUp();
+        $('button.isDisabled').removeAttr('disabled');
+        $('a.isDisabled').removeAttr('disabled');
+        var currDescriptionIdBtn = document.getElementById(btnDescriptionId);
+        if (currDescriptionIdBtn != null)
+        {
+            $(currDescriptionIdBtn).toggleClass('btn-danger', 'btn-primary');
+        }
+    }
+
+    function fctEditItem(itemId) {
+        var inputId = itemId + "Input";
+        var currBtn = document.getElementById(itemId);
+        $(currBtn).slideDown();
+        $('button.isDisabled').attr('disabled', 'disabled');
+        $('a.isDisabled').attr('disabled', 'disabled');
+        document.getElementById(inputId).focus();
+    }
+
+    function fctDeleteItem(itemId, btnDescriptionId) {
+        var currBtn = document.getElementById(itemId);
+        var currDescriptionIdBtn = document.getElementById(btnDescriptionId);
+        $(currDescriptionIdBtn).toggleClass('btn-danger', 'btn-primary');
+        $(currBtn).slideDown();
+        $('button.isDisabled').attr('disabled', 'disabled');
+        $('a.isDisabled').attr('disabled', 'disabled');
+    }
+
+</script>

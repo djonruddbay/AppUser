@@ -1,0 +1,102 @@
+﻿@model AppUser.Models.ProfileViewModels.ProfileCreateViewModel
+
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Create Profile";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+<div class="row container">
+    <form asp-action="ProfileCreate" enctype="multipart/form-data">
+        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group form-inline RowTop">
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-3" id="imgProfilePreview">
+                        @await Html.PartialAsync("_ImageNotSelected")
+                    </div>
+                    <div class="col-xs-offset-1 col-xs-7">
+                        <label class="btn btn-sm btn-primary" style="margin-top:10px;"
+                               for="imgProfileUpload" id="lblBtnProfileImage">
+                            Select Your Profile Image&nbsp;<span class="fa fa-user"></span>
+                        </label>
+                        <div hidden>
+                            <input asp-for="UserImage" type="file" id="imgProfileUpload"
+                                   accept=".jpg, .jpeg, .png" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control input-sm UserInput NoCopy NoPaste" autofocus/>
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control input-sm UserInput NoCopy NoPaste" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+            <div class="form-group has-feedback has-clear" style="margin-bottom:0px">
+                <label class="control-label">Address Lines *</label>
+                <input asp-for="AddressLine1" class="form-control input-sm UserInput" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+            <div class="form-group has-feedback has-clear">
+                <input asp-for="AddressLine2" class="form-control input-sm UserInput" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+            <div class="form-group has-feedback has-clear">
+                <label class="control-label">City *</label>
+                <input asp-for="City" class="form-control input-sm UserInput NoCopy NoPaste" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-7">
+                    <label class="control-label">State *</label>
+                    <select asp-for="State" class="form-control input-sm UserInput">
+                        @await Html.PartialAsync("_StateSelection")
+                    </select>
+                </div>
+                <div class="col-xs-5">
+                    <div class="form-group has-feedback has-clear pull-right">
+                        <label class="control-label">Zip Code *</label>
+                        <input asp-for="ZipCode"
+                               class="form-control input-sm UserInput ZipCode NoCopy NoPaste"
+                               style="width:120px" />
+                        <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+            <div class="form-group form-inline RowBottom">
+                <div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <button type="submit" class="btn btn-sm btn-success">
+                        Create Profile&nbsp;<span class="fa fa-save"></span>
+                    </button>
+                    <span class="pull-right" style="font-size:smaller; color:gray; margin-top:8px">
+                        <i style="font-size:smaller" class="fas fa-asterisk"></i>&nbsp;Optional Entries
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/ProfileImage.js"></script>
+    <script src="~/js/ZipCode.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

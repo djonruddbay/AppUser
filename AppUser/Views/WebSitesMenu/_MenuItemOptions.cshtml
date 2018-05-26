@@ -1,0 +1,92 @@
+﻿
+@{
+    // @Model represents a set of parameters in a string separated by a ":"
+    // 1st parameter is recId
+    // 2nd parameter is sequence number
+    // 3rd parameter is moveup available
+    // 4th parameter is movedown available
+
+    var parameterValues = @Model;
+    var recId = parameterValues.Substring(0, parameterValues.IndexOf(":"));
+    parameterValues = parameterValues.Substring(parameterValues.IndexOf(":") + 1);
+    bool skipMoveUp = (bool.Parse(parameterValues.Substring(0, parameterValues.IndexOf(":"))));
+    parameterValues = parameterValues.Substring(parameterValues.IndexOf(":") + 1);
+    bool skipMoveDn = (bool.Parse(parameterValues.Substring(0, parameterValues.IndexOf(":"))));
+    var webSitesDisabled = parameterValues.Substring(parameterValues.IndexOf(":") + 1);
+
+    var btnDescriptionId = "btnDescriptionId" + recId;
+    var itemIdAbove = "AddAbove" + recId;
+    var itemIdBelow = "AddBelow" + recId;
+    var itemEdit = "EditItem" + recId;
+    var itemDelete = "DeleteItem" + recId;
+    var deleteBackgroundColor = "red";
+    var deleteText = "Delete Item";
+    if (webSitesDisabled == "disabled")
+    {
+        deleteBackgroundColor = "pink";
+        deleteText = "Delete (Menu Items on File!)";
+    }
+}
+
+<ul class="dropdown-menu" style="left:110%; margin-top:-275%; background-color:lightsteelblue;">
+
+    @if (!skipMoveUp)
+    {
+        <li>
+            <a asp-action="MoveItem"
+               asp-controller="WebSitesMenu"
+               asp-route-profileId="@ViewData["ProfileId"]"
+               asp-route-currId="@recId"
+               asp-route-moveDirection="Up">
+                <span class="fa fa-arrow-up"></span>&nbsp;Move Up
+            </a>
+        </li>
+
+    }
+    @if (!skipMoveDn)
+    {
+        <li>
+            <a asp-action="MoveItem"
+               asp-controller="WebSitesMenu"
+               asp-route-profileId="@ViewData["ProfileId"]"
+               asp-route-currId="@recId"
+               asp-route-moveDirection="Down">
+                <span class="fa fa-arrow-down"></span>&nbsp;Move Down
+            </a>
+
+        </li>
+    }
+
+    @if (!skipMoveUp || !skipMoveDn)
+    {
+        <li role="separator" class="divider"></li>
+    }
+
+    <li>
+        <a href="#" onclick="fctAddAbove('@itemIdAbove')">
+            <span class="fa fa-level-up-alt"></span>&nbsp;Insert Menu Item Above
+        </a>
+    </li>
+    <li>
+        <a href="#" onclick="fctAddBelow('@itemIdBelow')">
+            <span class="fa fa-level-down-alt"></span>&nbsp;Insert Menu Item Below
+        </a>
+    </li>
+
+    <li role="separator" class="divider"></li>
+    <li>
+        <a href="#" onclick="fctEditItem('@itemEdit')">
+            <span class="fa fa-edit"></span>&nbsp;Edit Item Description
+        </a>
+    </li>
+
+    <li role="separator" class="divider"></li>
+
+    <li>
+        <a href="#" style="background-color:@deleteBackgroundColor; color:yellow;" @webSitesDisabled
+           onclick="fctDeleteItem('@itemDelete', '@btnDescriptionId')">
+            <span class="fa fa-trash"></span>&nbsp;@deleteText
+        </a>
+    </li>
+</ul>
+

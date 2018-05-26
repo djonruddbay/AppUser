@@ -1,0 +1,236 @@
+﻿
+@using AppUser.Data
+@using Microsoft.EntityFrameworkCore
+
+@model ProfilesModel
+
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
+
+@{
+    ViewData["Title"] = "My Profile";
+
+    var user = await UserManager.GetUserAsync(User);
+    var profile = await _context.Profiles
+        .SingleOrDefaultAsync(m => m.UserId == user.Id);
+
+    var EMail = await UserManager.GetEmailAsync(user);
+    var IsEmailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
+    var emailGlyphicon = IsEmailConfirmed ? "glyphicon-check" : "glyphicon-warning-sign";
+    var emailGlyphiconColor = IsEmailConfirmed ? "green" : "orange";
+    var emailToolTip = IsEmailConfirmed ? "EMail Verified" : "EMail Unverified";
+
+    var Phone = await UserManager.GetPhoneNumberAsync(user);
+    var IsPhoneConfirmed = await UserManager.IsPhoneNumberConfirmedAsync(user);
+    var phoneGlyphicon = IsPhoneConfirmed ? "glyphicon-check" : "glyphicon-warning-sign";
+    var phoneGlyphiconColor = IsPhoneConfirmed ? "green" : "orange";
+    var phoneToolTip = IsPhoneConfirmed ? "Phone Verified" : "Phone Unverified";
+    if (String.IsNullOrEmpty(Phone))
+    {
+        phoneGlyphicon = "";
+        phoneGlyphiconColor = "";
+        phoneToolTip = "";
+    }
+}
+
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+<div class="row container">
+    <form asp-action="ProfileEditView">
+        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+
+            <input type="hidden" asp-for="RowVersion" />
+
+            <div class="@TempData["StatusMessageHidden"]"
+                 style="height:30px; text-align:center;">
+                <h4 style="background-color:@TempData["SMBackGroundColor"];
+                    color:yellow; border:1px solid black; border-radius:10px;">
+                    @TempData["StatusMessage"]
+                </h4>
+                <hr />
+            </div>
+
+            <div class="row RowTop">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <a asp-action="PasswordChange" asp-controller="UserAccount"
+                           class="btn btn-primary btn-xs pull-left">
+                            Change My Password&nbsp;<i class="fa fa-key"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a asp-action="SecuritySelectionsUpdate" asp-controller="UserAccount"
+                           class="btn btn-primary btn-xs pull-right">
+                            My Security Selections&nbsp;<i class="fa fa-lock"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-xs-7">
+                    <div class="form-group has-feedback has-clear"
+                         data-toggle="tooltip" data-placement="top" Title="@emailToolTip">
+                        <input asp-for="@EMail" disabled class="form-control input-sm UserInput" />
+                        <i class="glyphicon @emailGlyphicon form-control-feedback" style="color:@emailGlyphiconColor"></i>
+                    </div>
+                </div>
+                <div class="col-xs-5" style="margin-top:2px">
+                    <a asp-action="EMailUpdate"
+                       asp-controller="UserAccount"
+                       class="btn btn-primary btn-xs pull-right">
+                        Update My E-Mail&nbsp;<i class="fa fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-7">
+                    <div class="form-group has-feedback has-clear"
+                         data-toggle="tooltip" data-placement="top" Title="@phoneToolTip">
+                        <input asp-for="@Phone" disabled class="form-control input-sm UserInput" />
+                        <i class="glyphicon @phoneGlyphicon form-control-feedback" style="color:@phoneGlyphiconColor"></i>
+                    </div>
+                </div>
+                <div class="col-xs-5" style="margin-top:4px">
+                    <a asp-action="PhoneUpdate"
+                       asp-controller="UserAccount"
+                       class="btn btn-primary btn-xs pull-right">
+                        Update My Phone&nbsp;<i class="fas fa-phone"></i>
+                    </a>
+                </div>
+            </div>
+
+            <hr />
+
+            @if (!IsEmailConfirmed && profile == null)
+            {
+                <h3 style="text-align:center; border:1px solid red; background-color:turquoise;">
+                    Profile Can Not Be Created
+                    <br />
+                    Until E-Mail Is Verified!!!
+                </h3>
+            }
+            else
+            {
+                @if (Model == null)
+                {
+                    <div class="RowBottom">
+                        <a asp-action="ProfileCreate" asp-controller="Profile"
+                           class="btn btn-primary form-control">
+                            Create Profile
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-xs-offset-1 col-xs-3">
+                            @if (profile.ProfileImage == "000")
+                            {
+                                <div class="pull-left">
+                                    @await Html.PartialAsync("_ImageNotSelected")
+                                </div>
+                            }
+                            else
+                            {
+                                var srcProfileImage = "\\AppUserData\\" + profile.AccountNumber + "\\ProfileImage_" + profile.ProfileImage;
+
+                                <img src="@srcProfileImage" class="ProfileImage" id="imgProfileImage" />
+                                <div class="pull-left" id="imgNotAvailable" hidden>
+                                    @await Html.PartialAsync("_ImageNotAvailable")
+                                </div>
+
+                            }
+                        </div>
+
+                        <div class="col-xs-8">
+                            <a asp-action="ProfileImageEdit" asp-controller="Profile"
+                               class="btn btn-primary btn-xs pull-right"
+                               style="margin-top:14px;">
+                                Change My Profile Image&nbsp;<i class="fa fa-user"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group has-feedback has-clear">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" class="form-control input-sm UserInput" autofocus 
+                                         spellcheck="false" autocomplete="off"/>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group has-feedback has-clear">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input asp-for="LastName" class="form-control input-sm UserInput" 
+                                         spellcheck="false" autocomplete="off"/>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback has-clear" style="margin-bottom:0px">
+                        <label class="control-label">Address Lines *</label>
+                        <input asp-for="AddressLine1" class="form-control input-sm UserInput" />
+                        <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                    </div>
+                    <div class="form-group has-feedback has-clear">
+                        <input asp-for="AddressLine2" class="form-control input-sm UserInput" />
+                        <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                    </div>
+                    <div class="form-group has-feedback has-clear">
+                        <label class="control-label">City *</label>
+                        <input asp-for="City" type="text"
+                               spellcheck="false" autocomplete="off"
+                               class="form-control input-sm UserInput" />
+                        <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <label class="control-label">State *</label>
+                            <select asp-for="State" class="form-control input-sm UserInput" id="selectState">
+                                @await Html.PartialAsync("_StateSelection")
+                            </select>
+                            <input type="hidden" asp-for="State" id="userState" />  @*leave this below select or edit won't work*@
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group has-feedback has-clear pull-right">
+                                <label class="control-label">Zip Code *</label>
+                                <input asp-for="ZipCode"
+                                       class="form-control input-sm UserInput ZipCode NoCopy NoPaste"
+                                       style="width:120px" />
+                                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="margin-top:0px"/>
+
+                    <div class="RowBottom">
+                        <button type="submit" class="btn btn-sm btn-success">
+                            Save Changes&nbsp;<i class="fa fa-save"></i>
+                        </button>
+                        <span class="pull-right" style="font-size:smaller; color:gray; margin-top:8px">
+                            <i style="font-size:smaller" class="fas fa-asterisk"></i>&nbsp;Optional Entries
+                        </span>
+                    </div>
+                }
+            }
+
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/State.js"></script>
+    <script src="~/js/ZipCode.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

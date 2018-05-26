@@ -1,0 +1,80 @@
+﻿@using AppUser.Models.UserAccountViewModels
+
+@model PhoneUpdateViewModel
+
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Update My Phone Number";
+    var user = await UserManager.GetUserAsync(User);
+    var CurrentPhone = await UserManager.GetPhoneNumberAsync(user);
+    var IsPhoneConfirmed = await UserManager.IsPhoneNumberConfirmedAsync(user);
+    var phoneGlyphicon = IsPhoneConfirmed ? "glyphicon glyphicon-check" : "glyphicon glyphicon-warning-sign";
+    var phoneGlyphiconColor = IsPhoneConfirmed ? "green" : "orange";
+    var phoneToolTip = IsPhoneConfirmed ? "Phone Verified" : "Phone Unverified";
+    if (String.IsNullOrEmpty(CurrentPhone))
+    {
+        phoneGlyphicon = "";
+        phoneGlyphiconColor = "";
+        phoneToolTip = "";
+    }
+}
+
+<h2 style="text-decoration:underline">@ViewData["Title"]</h2>
+
+<div class="row container">
+    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+
+            <div class="form-group has-feedback has-clear RowTop"
+                 data-toggle="tooltip" data-placement="top" Title="@phoneToolTip">
+                <label>Current Phone Number:</label>
+                <input asp-for="@CurrentPhone" disabled 
+                       class="form-control input-sm" />
+                <i class="@phoneGlyphicon form-control-feedback" style="color:@phoneGlyphiconColor"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label>New Phone Number</label>
+                <label class="pull-right" style="color:red"></label>
+                <input asp-for="PhoneNumber" type="text" id="newPhoneNumber" autofocus
+                       class="form-control input-sm UserInput NoCopy NoPaste PhoneNumber"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <hr />
+
+            <div class="form-group RowBottom">
+                <div asp-validation-summary="All" class="text-danger" style="margin-top:10px"></div>
+                <button type="submit" class="btn btn-sm btn-success" id="phoneSave">
+                    Save Changes&nbsp;<i class="fa fa-save"></i>
+                </button>
+                @if (!String.IsNullOrEmpty(CurrentPhone))
+                {
+                    <a class="btn btn-sm btn-danger" id="removePhone">
+                        Remove Phone&nbsp;<i class="fa fa-trash"></i>
+                    </a>
+                }
+
+                <button type="submit" class="btn btn-sm btn-danger hidden"
+                        style="border-color:yellow; color:yellow; font-weight:900" id="verifyRemovePhone"
+                        onclick="PhoneNumber = '' ">
+                    Verify Remove&nbsp;<i class="fa fa-trash"></i>
+                </button>
+
+                <a asp-controller="Profile" 
+                   asp-action="ProfileEditView" 
+                   asp-route-statusMessage=""
+                   class="btn btn-sm btn-primary pull-right">
+                    Return <span class="fa fa-hand-point-left"></span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/PhoneNumber.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

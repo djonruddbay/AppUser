@@ -1,0 +1,103 @@
+﻿@using AppUser.Models.UserAccountViewModels
+
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2 style="text-decoration:underline;">@ViewData["Title"]</h2>
+
+<div class="row container">
+    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 UserWindow">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="RowTop">
+
+            <div class="form-group" style="color:blueviolet">
+                By registering you agree to our:
+                <a href="#" data-toggle="modal" data-target="#theTandC"
+                   id="aRegisterTandC">
+                    <u><i>Terms and Conditions.</i></u>
+                </a>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="UserName"></label>
+                <label id="unStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="UserName" type="text" id="UserName" autofocus
+                       class="form-control input-sm UserInput"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            @await Html.PartialAsync("_UserNameRequirements")
+
+            <div class="form-group has-feedback Password">
+                <label asp-for="Password"></label>
+                <label id="pwStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="Password" id="Password" type="password"
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-eye-open form-control-feedback"></i>
+            </div>
+
+            @await Html.PartialAsync("_PasswordRequirements")
+
+            <div class="form-group has-feedback Password">
+                <label asp-for="ConfirmPassword"></label>
+                <label id="pwConfirmStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="ConfirmPassword" id="ConfirmPassword" disabled
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-eye-open form-control-feedback"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="Email"></label>&nbsp;(Internal Use Only)
+                <label id="emStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="Email" type="text" id="UserEmail"
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="ConfirmEmail"></label>
+                <label id="emConfirmStatus" class="pull-right" style="color:red"></label>
+                <input asp-for="ConfirmEmail" type="text" id="ConfirmEmail" disabled
+                       class="form-control input-sm UserInput NoCopy NoPaste"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            <div class="form-group has-feedback has-clear">
+                <label asp-for="PhoneNumber"></label> (Optional)
+                <input asp-for="PhoneNumber" type="text"
+                       class="form-control input-sm UserInput PhoneNumber"
+                       spellcheck="false" autocomplete="off" />
+                <i class="form-control-clear glyphicon glyphicon-remove-sign form-control-feedback"></i>
+            </div>
+
+            @await Html.PartialAsync("_SecuritySelections")
+
+            <hr />
+            <div class="RowBottom">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <button id="btnRegister" type="submit"
+                        name="returnUrl" value="@ViewData["ReturnUrl"]"
+                        class="btn btn-sm btn-success">
+                    Register <span class="fa fa-user-plus"></span>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/UserId.js"></script>
+    <script src="~/js/Password.js"></script>
+    <script src="~/js/EMail.js"></script>
+    <script src="~/js/SecuritySelections.js"></script>
+    <script src="~/js/PhoneNumber.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

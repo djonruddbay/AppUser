@@ -1,0 +1,90 @@
+﻿
+@model AppUser.Models.ProfilesModel
+@using AppUser.Data
+@using Microsoft.EntityFrameworkCore
+
+@inject UserManager<ApplicationUser> UserManager
+@inject ApplicationDbContext _context
+
+@{
+    ViewData["Title"] = "AppUser Home";
+
+    var idChevron = "";
+    var hrefMenuId = "";
+    var FullName = @Model.FirstName.Trim() + " " + @Model.LastName;
+    if (FullName.Length > 25)
+    {
+        FullName = FullName.Substring(0, 25);
+    }
+}
+
+<div class="row container">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
+        <div class="row">
+            <div style="border:solid; border-width:2px; border-color:aqua; background-color:lightgray;height:65px;">
+
+                <img src=@TempData["ProfileImage"] class="ProfileImage" id="imgProfileImage" />
+                <div class="pull-left" id="imgNotAvailable" hidden>
+                    @await Html.PartialAsync("_ImageNotAvailable")
+                </div>
+                <label style="font-size:small; margin-top:20px; margin-left:10px">
+                    @FullName
+                </label>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-primary" style="border:1px solid orange">
+
+                @foreach (var menu in Model.WebSitesMenu.OrderBy(o => o.SequenceNumber))
+                {
+                    idChevron = "idChevron" + menu.Id.ToString();
+                    hrefMenuId = "HrefMenuId" + menu.Id.ToString();
+
+                    <a class="btn btn-primary btn-block" data-toggle="collapse" href="#@hrefMenuId"
+                       role="button" aria-expanded="false" aria-controls="collapseExample"
+                       onclick="ftnSwitchChevrons('@idChevron')">
+                        @menu.Description
+                        <span id="@idChevron" class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+
+                    int webSitesCnt = 0;
+                    <ul class="list-group collapse out" style="list-style-type: none;"    id="@hrefMenuId">
+                        @foreach (var webSites in menu.WebSites.OrderBy(o => o.Description))
+                        {
+                            webSitesCnt += 1;
+                            <li >
+                                <a href="@webSites.WebSiteURL" target="_blank"
+                                   class="btn btn-info btn-sm btn-block"
+                                   style="text-align:left; color:yellow">
+                                    @webSites.Description<i class="pull-right fa fa-rocket"></i>
+                                </a>
+                            </li>
+                        }
+
+                        @if (webSitesCnt == 0)
+                        {
+                            <li> 
+                                <a href="" target="_blank" 
+                                   class="btn btn-sm btn-default btn-block disabled"
+                                   style="color:black; font-weight:800">
+                                    No WebSites Assigned!
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function ftnSwitchChevrons(ItemId) {
+        var itemId = document.getElementById(ItemId);
+        $(itemId).toggleClass('glyphicon-chevron-up glyphicon-chevron-down');
+    }
+</script>

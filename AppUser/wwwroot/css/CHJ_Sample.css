@@ -1,0 +1,177 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: url(../images/marble2.JPG);
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+/*Application Add On's*/
+
+input::-ms-clear, input::-ms-reveal {
+    display: none;
+}
+
+a:focus {
+    outline: none;
+}
+
+hr { /* Set color, top & bottom margins for horizontal rules */
+    border-color: lightgray;
+    color: lightgray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+footer { /*Set footer to absolute page bottom*/
+    border: solid;
+    background-color: #AEBBBF;
+    color: #4A4848;
+}
+
+
+.UserWindow { /* user window controls */
+    background-color: rgba(247, 255, 255, 0.44);
+    border: solid 2px #a7a1a1;
+}
+
+.UserInput { /* user input window */
+    color: #000000;
+    border: solid 1px #8d8383;
+    background-color: #DAF4F7;
+}
+
+    .UserInput:hover {
+        border: solid 1px #000000;
+        background-color: rgba(247, 255, 255, 0.44)
+    }
+
+.RowTop { /* Set margin-top for .UserWindow inputs */
+    margin-top: 10px;
+}
+
+.RowBottom { /* Set margin-bottom for .UserWindow inputs */
+    margin-bottom: 8px;
+}
+
+.InfoLabel {
+    background-color: lightgray;
+    border: 1px solid black;
+}
+
+.RememberMeCheckBox:hover { /* remember me check box control */
+    color: green;
+}
+
+.HoverCheckBox:hover { /* hover check box control */
+    color: slateblue;
+}
+
+.ProfileImage { /* profile image control */
+    border: gray groove 3px; 
+    height:60px; 
+    width:70px;
+}
+
+
+/* begin table controls */
+table {
+    border: 2px solid black;
+    background-color: rgba(247, 255, 255, 0.50);
+}
+thead {
+    border-bottom: black double 3px;
+    background-color: rgba(200, 255, 255, 0.50);
+}
+tbody tr:hover {
+    background-color: #F2EDED;
+}
+th {
+    border: black solid 1px;
+}
+td {
+    border: 1px solid black;
+}
+/* end table controls */
+
+/* begin clear input controls */
+.glyphicon-remove-sign {
+    color: gray;
+}
+.form-control-clear {
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
+}
+/* end clear input controls */
+
+
+/* button control */
+.btn {
+    border: 3px groove darkgray;
+}
+    .btn:focus {
+        outline: none;
+    }
+    .btn:hover {
+        color: #fafa05;
+        border: 3px ridge #000000;
+    }
+
+/* Begin BootStrap Popups */
+.bsPopUps {
+    border: lightgreen solid 5px;
+    border-radius: 25px;
+    background-color: lightgray;
+}
+    .bsPopUps > .modal-header {
+        border-bottom: solid lightgreen 2px;
+        text-align: center;
+    }
+    .bsPopUps > .modal-footer {
+        border-top: solid lightgreen 2px;
+    }
+    .bsPopUps .modalHeading {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: 800;
+    }
+/* End BootStrap Popups */
+
+/* Begin ToolTip */
+.toolTip + .tooltip > .tooltip-inner {
+    background-color: aqua;
+    color: black;
+    border: 3px groove gray;
+    font-size: 12px;
+}
+/* End ToolTips */
